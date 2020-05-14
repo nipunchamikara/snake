@@ -35,7 +35,7 @@ Note: the directory must contain the **main.lua** file
 
 ## Acknowledgments
 Thank you for your code:
-* Matthias Richter, [Class.lua]https://github.com/vrld/hump
-* Ulysse Ramage, [push.lua]https://github.com/Ulydev/push
+* Matthias Richter, [Class.lua](https://github.com/vrld/hump)
+* Ulysse Ramage, [push.lua](https://github.com/Ulydev/push)
 
 Also, a huge thank you to CS50 for giving me this opportunity to create something that I can call my own. 
