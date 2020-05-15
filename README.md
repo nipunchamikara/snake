@@ -34,7 +34,6 @@ Note: the directory must contain the **main.lua** file
 * **Nipun Chamikara Weerasiri** - *Initial work* - [theharmlesscreeper](https://github.com/theharmlesscreeper)
 
 ## Acknowledgments
-Thank you for your code:
 * Matthias Richter, [Class.lua](https://github.com/vrld/hump)
 * Ulysse Ramage, [push.lua](https://github.com/Ulydev/push)
 * Thomas ten Cate, [sound effects](https://github.com/ttencate/jfxr)
