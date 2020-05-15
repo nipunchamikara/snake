@@ -20,6 +20,8 @@ Class = require 'class'
 -- https://github.com/Ulydev/push
 push = require 'push'
 
+-- Sound effects: https://github.com/ttencate/jfxr
+
 require 'Snake'
 require 'Food'
 
