@@ -15,15 +15,18 @@ WINDOW_WIDTH = 240
 WINDOW_HEIGHT = 240
 
 -- https://github.com/vrld/hump
-Class = require 'class'
+Class = require 'utilities/class'
 
 -- https://github.com/Ulydev/push
-push = require 'push'
+push = require 'utilities/push'
 
 -- Sound effects: https://github.com/ttencate/jfxr
 
-require 'Snake'
-require 'Food'
+require 'gameplay/Snake'
+require 'gameplay/Food'
+require 'menu/menu'
+require 'menu/Button'
+require 'menu/Toggle'
 
 function love.load()
 
@@ -33,6 +36,17 @@ function love.load()
     -- instantiation of classes Snake and Food
     snake = Snake(8, 0.1)
     food = Food(4)
+
+    -- instantiation of buttons
+    newGame = Button()
+    settings = Button()
+    exit = Button()
+    back = Button()
+
+    -- instantiation of toggles
+    easy = Toggle()
+    medium = Toggle()
+    hard = Toggle()
 
     -- texture scaling filter
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -56,6 +70,9 @@ function love.load()
 
     -- initialising game state
     gameState = 'start'
+
+    -- initialise menu variables
+    menuType = 'main'
 end
 
 function love.resize(width, height)
@@ -96,12 +113,14 @@ function love.update(dt)
     -- updates snake and food when game is being played (gameState = 'play')
     if gameState == 'play' then
         snake:update(dt)
+        menuType = 'main'
     end
 
     -- constantly checks for collisions
     if snake:collision() then
         gameState = 'dead'
     end
+
 end
 
 
@@ -114,7 +133,7 @@ function score()
     love.graphics.setColor(0, 0, 0, 1)
     love.graphics.setFont(largeFont)
     -- prints out the score
-    love.graphics.printf(tostring(((snake.length - 10)/ snake.interval) / 10), 
+    love.graphics.printf(tostring(snake.score), 
                         0, 10, WINDOW_WIDTH,'center')
     -- sets colour to white
     love.graphics.setColor(1, 1, 1, 1)
@@ -151,76 +170,4 @@ function love.draw()
     score()
 
     push:apply('end')
-end
-
--- the following functions renders the menu
-
--- function returns true if button is clicked; renders buttons
-function button(x, y, width, height, text)
-    -- gets position of mouse
-    local cursorX, cursorY = love.mouse.getPosition()
-    
-    -- adjusts cursor position based on the current width, height and scale factor
-    cursorX = (cursorX - math.max(0, (WIDTH - HEIGHT) / 2)) / SCALE_FACTOR
-    cursorY = (cursorY - math.max(0, (HEIGHT - WIDTH) / 2)) / SCALE_FACTOR
-
-    local buttonPress = false
-
-    love.graphics.setColor(227 / 255, 244 / 255, 255 / 255, 1)
-
-    -- checks whether mouse is hoving over the button
-    if cursorX >= x and cursorX <= (x + width) and cursorY >= y and cursorY <= (y + height) then
-        -- changes colour of button when hovered upon
-        love.graphics.setColor(213 / 255, 228 / 255, 235 / 255, 1)
-
-        -- checks whether primary button (1) has been clicked
-        if love.mouse.isDown(1) then
-            buttonPress = true
-        end
-    end
-
-    -- renders rectanges used as menu buttons
-    love.graphics.rectangle('fill', x, y, width, height)
-    love.graphics.setColor(0 , 0, 0, 1)
-    love.graphics.printf(text, x, y + height / 2 - 7, width, 'center')
-    love.graphics.setColor(1, 1, 1, 1)
-
-    -- returns whether particular button has been pressed
-    return buttonPress
-end
-
-function menu()
-    -- changes font to large
-    love.graphics.setFont(largeFont)
-
-    -- dimensions of menu
-    local height = WINDOW_HEIGHT / 2.5
-    local width = WINDOW_WIDTH / 1.5
-
-    -- position of menu box
-    local x = WINDOW_WIDTH / 2 - width / 2
-    local y = WINDOW_HEIGHT / 2 - height / 2
-
-    love.graphics.setColor(188 / 255, 201 / 255, 230 / 255, 1)
-    love.graphics.rectangle('fill', x, y, width, height)
-
-    -- renders and checks if the 'new game' button is clicked
-    if button(x + width / 6, y + width / 6 - 5, width / 1.5, height / 4, 'NEW GAME') then
-        snake = Snake(8, 0.1)
-        food = Food(4)
-        gameState = 'play'
-    end    
-
-    -- renders and checks if the 'exit' button is clicked
-    if button(x + width / 6, y + width / 3 + 5, width / 1.5, height / 4, 'EXIT') then
-        love.event.quit()
-    end
-
-    -- prints out message to resume game (if gameState is 'pause'')
-    love.graphics.setFont(smallFont)
-    if gameState == 'pause' then
-        love.graphics.setColor(0, 0, 0, 1)
-        love.graphics.printf("hit esc to resume", 0, y + height - 10, WINDOW_WIDTH, 'center')
-        love.graphics.setColor(1, 1, 1, 1)
-    end
 end

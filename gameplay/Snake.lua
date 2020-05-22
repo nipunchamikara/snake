@@ -28,6 +28,9 @@ function Snake:init(width, interval)
 
     -- loading sound
     self.foodCollect = love.audio.newSource('sounds/food_collect.wav', 'static')
+
+    -- storing score
+    self.score = 0
 end
 
 -- returns true if the snale collides either against itself or the wall
@@ -57,7 +60,9 @@ function Snake:food()
         self.foodCollect:play()
         -- adds 10 to the length of the snake
         self.length = self.length + 10
+        return true
     end
+    return false
 end
 
 function Snake:update(dt)
@@ -93,7 +98,9 @@ function Snake:update(dt)
         self.change = false
 
         -- checks if snake encountered food
-        self:food()
+        if self:food() then
+            self.score = self.score + 1 / snake.interval
+        end
     end
 end
 
@@ -101,6 +108,9 @@ function Snake:render()
     -- light green colour
     love.graphics.setColor(212 / 255, 240 / 255, 197 / 255, 1)
     love.graphics.line(self.coords)
+    -- dark green colour for the head
+    love.graphics.setColor(115 / 255, 222 / 255, 124 / 255, 1)
+    love.graphics.line(self.coords[1], self.coords[2], self.coords[3], self.coords[4])
     -- white colour
     love.graphics.setColor(1, 1, 1, 1) 
 end

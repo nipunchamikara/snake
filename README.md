@@ -6,7 +6,9 @@ The snake is controlled using the arrow keys (up, down, left, right).
 
 The task is to collect 'food' and avoid hitting itself or the surrounding wall. On collecting food, the length of the snake is incremented and score increased.
 
-A rudimentary menu is provided with basic functionality like starting a new game and quiting. Hitting escape can pause or resume gameplay.
+A rudimentary menu is provided with basic functionality like starting a new game and quiting. 
+Difficulty of the game can be changed.
+Hitting escape can pause or resume gameplay.
 
 ## Getting Started
 
